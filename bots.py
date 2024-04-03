@@ -14,6 +14,9 @@ class Bot():
     def append_history(self, move):
         self.history.append(move)
 
+    def clear_history(self):
+        self.history = []
+
 
 class AlwaysCooperate(Bot):
     def __init__(self):
