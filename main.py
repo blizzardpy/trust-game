@@ -1,5 +1,6 @@
 from bots import *
-
+import matplotlib.pyplot as plt
+from collections import defaultdict
 
 class Tournament:
     def __init__(self, players, number_of_rounds=10, top_players_to_reproduce=5, new_game=True):
@@ -12,8 +13,8 @@ class Tournament:
             self.scores = {player: 0 for player in self.players}
         self.payout = {
             ("C", "C"): (2, 2),
-            ("C", "N"): (-1, 3),
-            ("N", "C"): (3, -1),
+            ("C", "N"): (2, -1),
+            ("N", "C"): (-1, 2),
             ("N", "N"): (0, 0)
         }
 
@@ -31,12 +32,13 @@ class Tournament:
                     self.scores[player2] += payoff[1]
         self.players.sort(key=lambda x: self.scores[x], reverse=True)
         top_players = self.players[:self.top_players_to_reproduce]
+
         print("Tournament finished!")
         print("Final standings:")
         for player in top_players:
             print(
                 f"{player.__class__.__name__} - Score: {self.scores[player]}")
-
+        
         self.new_game = False
 
 
@@ -45,10 +47,12 @@ def create_players():
         AlwaysCooperate(), AlwaysCooperate(), AlwaysCooperate(),
         AlwaysBetray(), AlwaysBetray(), AlwaysBetray(),
         Copycat(), Copycat(), Copycat(),
-        Copykitten(), Copykitten(), Copykitten(),
-        Simpleton(), Simpleton(), Simpleton(),
-        Random(), Random(), Random(), Random(),
-        Grudger(), Grudger(), Grudger(),
+        Copykitten(), Copykitten(),Copykitten(), 
+        Copykitten(), Copykitten(),Copykitten(), 
+        Copykitten(), Copykitten(),Copykitten(), 
+        # Simpleton(), Simpleton(), Simpleton(),
+        Random(), Random(),Random(), Random(),
+        # Grudger(), Grudger(), Grudger(),
         Detective(), Detective(), Detective(),
     ]
     return players
@@ -96,7 +100,27 @@ def main():
         # Add top 5 players to the new tournament with reset scores
         new_players = top_players_previous + top_players_to_reproduce
 
+        chartLabel=[]
+        chartData=[]
+        all_players = ['AlwaysCooperate','Detective','Grudger',
+                    'Random','Simpleton','Copykitten','AlwaysBetray','Copycat' 
+                    ]
+        for player in new_players:
+            chartLabel.append(player.__class__.__name__ )
+
+        labels = list(dict.fromkeys(chartLabel))
+         
+        for p in labels:
+            chartData.append(chartLabel.count(p))
+
+        fig, ax = plt.subplots()
+        ax.pie(chartData, labels=labels ,autopct='%1.1f%%', startangle=120)
+        plt.title('Pie Chart with Aggregated Labels')
+        plt.axis('equal')  
+      
         prompt = input("Do you want to run another tournament? (y/n): ")
+      
+        plt.show()
         if prompt.lower() != "y":
             break
 
