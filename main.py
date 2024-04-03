@@ -1,6 +1,5 @@
 from bots import *
 import matplotlib.pyplot as plt
-from collections import defaultdict
 
 class Tournament:
     def __init__(self, players, number_of_rounds=10, top_players_to_reproduce=5, new_game=True):
@@ -38,7 +37,7 @@ class Tournament:
         for player in top_players:
             print(
                 f"{player.__class__.__name__} - Score: {self.scores[player]}")
-        
+
         self.new_game = False
 
 
@@ -47,9 +46,9 @@ def create_players():
         AlwaysCooperate(), AlwaysCooperate(), AlwaysCooperate(),
         AlwaysBetray(), AlwaysBetray(), AlwaysBetray(),
         Copycat(), Copycat(), Copycat(),
-        Copykitten(), Copykitten(),Copykitten(), 
-        Copykitten(), Copykitten(),Copykitten(), 
-        Copykitten(), Copykitten(),Copykitten(), 
+        Copykitten(), Copykitten(),Copykitten(),
+        Copykitten(), Copykitten(),Copykitten(),
+        Copykitten(), Copykitten(),Copykitten(),
         # Simpleton(), Simpleton(), Simpleton(),
         Random(), Random(),Random(), Random(),
         # Grudger(), Grudger(), Grudger(),
@@ -103,23 +102,23 @@ def main():
         chartLabel=[]
         chartData=[]
         all_players = ['AlwaysCooperate','Detective','Grudger',
-                    'Random','Simpleton','Copykitten','AlwaysBetray','Copycat' 
+                    'Random','Simpleton','Copykitten','AlwaysBetray','Copycat'
                     ]
         for player in new_players:
             chartLabel.append(player.__class__.__name__ )
 
         labels = list(dict.fromkeys(chartLabel))
-         
+
         for p in labels:
             chartData.append(chartLabel.count(p))
 
         fig, ax = plt.subplots()
         ax.pie(chartData, labels=labels ,autopct='%1.1f%%', startangle=120)
         plt.title('Pie Chart with Aggregated Labels')
-        plt.axis('equal')  
-      
+        plt.axis('equal')
+
         prompt = input("Do you want to run another tournament? (y/n): ")
-      
+
         plt.show()
         if prompt.lower() != "y":
             break
